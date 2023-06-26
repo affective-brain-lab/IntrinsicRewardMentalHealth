@@ -1,0 +1,2492 @@
+---
+title: "Intrinsic Rewards are domain general and related to mental health"
+output:
+  html_document: default
+  date: "2023-02-22"
+  pdf_document: default
+  word_document: default
+---
+```{r include=FALSE}
+# LOAD LIBRARIES
+
+library(pwr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(patchwork)
+library(nFactors)
+library(psych)
+library(corrplot)
+
+# IMPORT DATA
+load("lStim1.Rda")
+load("lQuest1.Rda")
+load("lDemo1.Rda")
+load("lStim2.Rda")
+load("lQuest2.Rda")
+load("lDemo2.Rda")
+load("lStim3.Rda")
+load("lQuest3.Rda")
+load("lDemo3.Rda")
+# get the data for the "absolute" liking
+load("rewardLiking1.Rda")
+load("alternativeLiking1.Rda")
+load("rewardLiking2.Rda")
+load("alternativeLiking2.Rda")
+load("rewardLiking3.Rda")
+load("alternativeLiking3.Rda")
+```
+# Introduction
+
+Humans spend much of their time engaging in activities that are pleasurable in their own right. These activities are undertaken even when they do not lead to external outcomes: they are intrinsically rewarding. Watching the sunset, reading, solving cross word puzzles, playing, exploring nature, observing works of art, are a few such examples. 
+
+On the surface these different activities do not have common features or goals. This contrasts with activities that lead to primary rewards (e.g., eating, fornicating), which all have clear and direct survival benefits, and secondary rewards (e.g., money), which in turn are associated with primary rewards. It is possible, however, that different intrinsic rewards do share core characteristics, mechanisms, and goals not readily transparent. If so, such common features should elicit similar types of behavioural responses, and individual differences in these responses should be partially domain general. Here, we test this hypothesis. Namely, that despite diverse intrinsic rewards seeming vastly different from each other, sensitivity to them is partially domain general and may be shared with secondary rewards. 
+
+Engagement with specific intrinsically rewarding stimulus has been associated with happiness, mental health, and professional achievement. Here, we pose that these past findings can in fact be explained by a core association between mental health and domain-general sensitivity to intrinsic rewards. That is, if an individual finds a specific stimulus rewarding (e.g. observing landscapes), they may be more likely to find other stimuli (e.g. reading, playing, etc.) rewarding due to a domain-general sensitivity to (intrinsic) rewards, which may be associated with mental health. Individuals with high sensitivity to intrinsic rewards will be inclined to engage with a variety of seemingly diverse intrinsically rewarding activities, which in turn will increase the likelihood that they will eventually find rewarding activities that they also excel at. Low sensitivity to intrinsic rewards, on the other hand, will produce a general disinterest in a large variety of activities, which will lead to low mood and lack of motivation. Thus, a domain-general sensitivity to intrinsic rewards will contribute to flourishing and its absence to suffering. 
+
+We focus here on a core aspect of mental health which we will refer to as ‘affective health’. We define ‘affective health’ as a range of characteristics that are related to positive mood, high motivation, feelings of pleasure, interest, and happiness. To investigate whether sensitivity to intrinsic rewards is domain general and related to affective aspects of mental health, we selected three putative intrinsically rewarding** stimuli from the visual domain, cognitive domain, and social domain, (Fig 1A). We also compared responses to these putative intrinsic rewards with responses to monetary reward, to test whether sensitivity to intrinsic rewards is shared with that to secondary rewards. 
+
+It has been suggested that a stimulus is a ‘reward’ if it elicits three typical responses. First, it elicits positive emotions (it is ‘liked’). Second, it generates approach/consummatory behaviours (it is ‘wanted’). Third, it increases the likelihood of the action that led to it (it is ‘reinforcing’). Thus, we measured liking, wanting and reinforcement of all stimuli to assess individuals’ reward sensitivity. We also asked participants to fill a range of questionnaires related to affective aspects of mental health and implemented a dimensionality approach, which considers the possibility that specific symptoms is predictive of several conditions, thus allowing an investigation that cuts through classic clinical boundaries. Together, the data allowed us to examine if within-individual responses to intrinsic rewards are domain general and linked to mental health.
+
+
+
+# Participants number & Demographics summary
+## Experiment 1
+```{r echo="FALSE"}
+# power analysis
+pwr.r.test(r=0.25,power=0.80,sig.level=0.05,alternative="two.sided")
+# Demo
+print(lDemo1 %>% 
+  mutate(gender = ifelse(is.na(gender), "Unknown", ifelse(gender == 0, "Female", "Male"))) %>% 
+  group_by(gender) %>% 
+  summarize(
+    Proportion = n() / nrow(lDemo1),
+    Average_Age = mean(age, na.rm = TRUE),
+    SD_Age = sd(age, na.rm = TRUE),
+    Average_IQ = mean(iq, na.rm = TRUE),
+    SD_IQ = sd(iq, na.rm = TRUE),
+    Average_Edu = mean(edu, na.rm = TRUE),
+    SD_Edu = sd(edu, na.rm = TRUE),
+    Average_Married = mean(married, na.rm = TRUE),
+    SD_Married = sd(married, na.rm = TRUE)
+  ))
+``` 
+## Experiment 2
+```{r echo="FALSE"}
+# power analysis
+pwr.r.test(r=0.22,power=0.80,sig.level=0.05,alternative="two.sided")
+# Demo
+print(lDemo2 %>% 
+  mutate(gender = ifelse(is.na(gender), "Unknown", ifelse(gender == 0, "Female", "Male"))) %>% 
+  group_by(gender) %>% 
+  summarize(
+    Proportion = n() / nrow(lDemo2),
+    Average_Age = mean(age, na.rm = TRUE),
+    SD_Age = sd(age, na.rm = TRUE),
+    Average_IQ = mean(iq, na.rm = TRUE),
+    SD_IQ = sd(iq, na.rm = TRUE),
+    Average_Edu = mean(edu, na.rm = TRUE),
+    SD_Edu = sd(edu, na.rm = TRUE),
+    Average_Married = mean(married, na.rm = TRUE),
+    SD_Married = sd(married, na.rm = TRUE)
+  ))
+``` 
+## Experiment 3
+```{r echo="FALSE"}
+# power analysis
+pwr.r.test(r=0.22,power=0.80,sig.level=0.05,alternative="two.sided")
+# Demo
+print(lDemo3 %>% 
+  mutate(gender = ifelse(is.na(gender), "Unknown", ifelse(gender == 0, "Female", "Male"))) %>% 
+  group_by(gender) %>% 
+  summarize(
+    Proportion = n() / nrow(lDemo3),
+    Average_Age = mean(age, na.rm = TRUE),
+    SD_Age = sd(age, na.rm = TRUE),
+    Average_IQ = mean(iq, na.rm = TRUE),
+    SD_IQ = sd(iq, na.rm = TRUE),
+    Average_Edu = mean(edu, na.rm = TRUE),
+    SD_Edu = sd(edu, na.rm = TRUE),
+    Average_Married = mean(married, na.rm = TRUE),
+    SD_Married = sd(married, na.rm = TRUE)
+  ))
+``` 
+For all experiments, ethical approval was provided by the Research Ethics Committee at University College London (Project ID Number:3990/003) and all participants gave written informed consent to participate. 
+
+
+Participants (Experiment 1). Based on a pilot study we estimated an effect size of about 0.25. Thus, for a regression with a power of 80% and alpha = 0.05, we needed a sample size of 128. We added 15% to account for failed attention checks, which resulted in 149 participants. Data were collected between November 22nd , 2021 and November 29th, 2021. 
+
+One hundred and fourty nine participants completed the task on Prolific (https://www.prolific.co/) online system. 17 participants failed the comprehension and/or attention checks, thus their data was not analysed (see details below). Thus, data of 132 participants were analysed (female = 34%, age = 33 ± 12 (M ± SD); male = 66%, age = 29 ± 9; other = 0%). Participants received £7.50 per hour for their participation plus a 50p “bonus” payment. The experiment lasted for about 90 minutes. For all experiments, ethical approval was provided by the Research Ethics Committee at University College London and all participants gave written informed consent to participate.
+
+Participants (Experiment 2). Sample size was based on a power analysis based on Experiment 1, which showed that 159 participants were required for a regression weight of 0.22 (lower bound of the effect size from the regression between mental health score and reward sensitivity, without correcting for demographics, which was 0.23 ± 0.01 in Experiment 1) with 80% power and alpha = 0.05. We anticipated that about 30 participants will fail the attention and/or comprehension checks. Therefore, we recruited 188 participants on the Prolific website. Data of 17 participants were not analysed as they did not pass the comprehension and/or attention checks. Thus, 171 participant’s data was analysed (female = 51%, age = 34 ± 16 (M ± SD); male = 49%, age = 35 ± 13; other = 0%). Participants received £7.50 per hour for their participation. Data were collected between January 20th 2022  and January 25th 2022.
+
+Participants (Experiment 3). Data was collected between January 18th 2023 and January 31st 2023. Sample size was calculated as for Experiment 2. As we added more catch trials (in the wanting measure, see below), we expected a higher rate of failure at the attention checks. Therefore, we added about an extra 40 participants and we therefore recruited 198 participants on Prolific website. Data of 18 participants was not analysed as they did not pass comprehension and/or attention checks. Thus, 180 participant’s data was analysed (female = 41%, age = 38 ± 12 (M ± SD); male = 59%, age = 39 ± 12; other = 0%).
+
+# Results 
+Two identical online studies were conducted (Experiment 1: N = 132, Experiment 2: N = 171), as well as a modified version (Experiment 3: N = 180). In each we measured three types of responses: liking, wanting, and reinforcing strength (in that order in Experiment 1&2, and counterbalanced in Experiment 3, see Methods) to ten categories of stimuli. There were three categories of putative intrinsic reward (visual, cognitive, social) and three categories of non-rewarding alternative stimuli (visual, cognitive, social). In the visual domain, we used landscapes as a reward and images of walls as an alternative (Figure 1A & Methods). Staring at landscapes has been rated positively in the past unlike looking at walls7,17. In the cognitive domain, we presented participants with trivia facts, as consuming such information (e.g. reading) is thought to be rewarding9,10. It has been shown that humans select to observe (and thus read) sentences and that the opportunity to consume sentences that increase general knowledge activates the reward system just like primary rewards, suggesting that consuming knowledge is rewarding9,10. We presented random string of letters as an alternative. In the social domain, we used social similarity as a reward (i.e. a participant learns that another participant shares the same preference as them) and social disagreement as an alternative. This was selected as studies have shown the existence of a confirmation bias by which subjects select to observe information that they suspect confirms their believes (e.g. 18) including in the social domain11. Moreover, confirmation has been shown to activate the reward system 11, suggesting that consuming confirmatory information (e.g., learning that someone agrees with you) is rewarding. The monetary reward was earning bonus money (represented on screen as a coin) and its alternative was not receiving a coin. All reward types were compared to a neutral stimulus: vertical and horizontal lines.  
+ 
+To measure liking, participants were exposed to a block of a rewarding stimulus and to a block of its alternative and were asked to report how much they liked that block after each block (Figure 1B & Methods). To measure wanting in Experiment 1 & 2, participants indicated whether they preferred to experience ten trials of the reward or ten trials of its control on a sliding preference scale, which deterministically and explicitly led to the presentation of either ten trials of the putative intrinsically rewarding stimulus or its alternative. In Experiment 3, on each of 15 trials participants chose whether to be exposed to a rewarding stimulus or to its alternative and their choice was immediately honoured. To measure reinforcing strength, that is whether a stimulus increase the likelihood of the action that preceded them, participants chose between abstract shapes probabilistically linked to the putative intrinsically rewarding stimulus or to the corresponding alternative. 
+
+
+![caption Source: Figure 1 stimuli and procedure.](Images/Figure1.jpg)
+Figure 1. Experimental design. A: Stimuli included five categories –visual, cognitive, social and monetary rewards as well as neutral stimuli. Intrinsic rewards were the visual reward (landscapes), the cognitive reward (facts) and the social reward (social approbation of participant’s preference which was collected at the beginning of the experiment). The monetary reward was a coin signalling a bonus payment. It was always the same coin in Experiment 1 & 2, but different coins on every trial in Experiment 3. Each reward was associated with an alternative stimulus. This included walls for the visual reward, a random string of letters for the cognitive reward, disagreement for the social reward, and not receiving a coin for the secondary reward. Neutral stimuli were vertical and horizontal lines. B: For each reward type, participants were exposed to two blocks of the rewarding stimulus (five trials each) and two blocks of the alternative stimulus (five trials each). Order was either reward-alternative-reward-alternative or  alternative-reward-alternative-reward. After each block participants rated how much they liked that block. To measure wanting in Experiment 1 & 2, participants were asked to rate how much they wanted to be exposed to 10 trials of the rewarding stimulus or 10 trials of the alternative stimulus. They were then exposed to ten trials of the chosen stimulus. In Experiment 3, on each of 15 trials participants chose whether to be exposed to a rewarding stimulus or the alternative stimuli, and then their choice was honoured. To measure the reinforcing strength of each reward, participants were exposed to a pair of abstract cues each probabilistically related to the rewarding stimulus with either 0.75 probability or 0.25 probability and to the alternative stimulus with either 0.25 or 0.75 probability. The percentage of trials in which they selected the abstract cue leading more often to the rewarding stimulus was the measure of the reinforcing strength. Each reward type was presented in counterbalanced order across participants for all experiments. In Experiment 1 & 2, the order was always liking-wanting-reinforcement, while in Experiment 3 the order was counterbalanced across participants and reward type. In this figure we use landscapes (L) and walls (W) as example trials. 
+
+# Intrinsic rewards are liked, wanted, and reinforcing
+## Tables
+## Experiment 1
+### Liking Rating
+```{r echo=FALSE}
+likingResults1 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(rewardLiking1, mean),
+  SE_Reward_Rating = sapply(rewardLiking1, sd) / sqrt(nrow(rewardLiking1)),
+  Avg_Alternative_Rating = sapply(alternativeLiking1, mean),
+  SE_Alternative_Rating = sapply(alternativeLiking1, sd) / sqrt(nrow(alternativeLiking1)),
+  Diff_Avg = sapply(rewardLiking1, mean) - sapply(alternativeLiking1, mean),
+  SE_Diff = sqrt((sapply(rewardLiking1, sd)^2/nrow(rewardLiking1)) +   (sapply(alternativeLiking1, sd)^2/nrow(alternativeLiking1))),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(rewardLiking1[,i]), as.matrix(alternativeLiking1[,i]),paired=TRUE)$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(rewardLiking1[,i]), as.matrix(alternativeLiking1[,i]),paired=TRUE)$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(rewardLiking1[,i]), as.matrix(alternativeLiking1[,i]),paired=TRUE)$p.value)
+)
+print(likingResults1)
+
+# get reward versus all alternative table
+## create a function
+getTableAllRvsA<-function(rewardLiking,alternativeLiking){
+  rewardLiking_mtx=as.matrix(rewardLiking)
+  alternativeLiking_mtx=as.matrix(alternativeLiking)
+  matP <- matrix(NA, nrow=5, ncol=5)
+  matSE <- matrix(NA, nrow=5, ncol=5)
+  matM2 <- matrix("", nrow=5, ncol=5)
+  for (iTask in 1:5) {
+    for (jTask in 1:5) {
+      # perform t-test
+      diff <- rewardLiking_mtx[,iTask] - alternativeLiking_mtx[, jTask]
+      t_test_result <- t.test(diff)
+      matP[iTask, jTask] <- t_test_result$p.value
+      matSE[iTask, jTask] <- t_test_result$stderr
+      matM2[iTask, jTask] <- paste0(round(mean(diff), 1), "±", round(matSE[iTask, jTask], 1))
+    }
+  }
+  # convert matM2 to a data frame and add column/row names
+  matM2_df <- data.frame(matM2)
+  colnames(matM2_df) <- c("Wall", "Letters", "Disconfirmation", "NoCoin", "Horizontal")
+  rownames(matM2_df) <- c("Landscape", "Information", "Confirmation", "Coin", "Vertical")
+  stats <- list()
+  stats$matM2_df<-matM2_df
+  stats$matP<-matP
+  return(stats)
+}
+# Liking reward against each alternative
+strctRvsAll<-getTableAllRvsA(rewardLiking1,alternativeLiking1)
+ print(strctRvsAll$matM2_df)
+  print(strctRvsAll$matP)
+stats <- list()
+stats$Exp1 <- list(
+    responses = list(
+      liking_AllrewardVSAllControl = strctRvsAll$matM2_df
+    )
+  )
+
+# get reward - alternative versus vertical -horizontal
+## create a function
+getTableAllRvsN<-function(rewardLiking,alternativeLiking){
+  rewardLiking_mtx=as.matrix(rewardLiking)
+  alternativeLiking_mtx=as.matrix(alternativeLiking)
+  matM2 <- matrix("", nrow=4, ncol=5)
+  for (iTask in 1:4) {
+      # perform t-test
+      diff <- (rewardLiking_mtx[,iTask] - alternativeLiking_mtx[, iTask]) - (rewardLiking_mtx[,5] - alternativeLiking_mtx[, 5])
+      t_test_result <- t.test(diff)
+      matM2[iTask,1]<-mean(diff)
+      matM2[iTask,2]<- t_test_result$stderr[1]
+      matM2[iTask,3] <- t_test_result$statistic[1]
+      matM2[iTask,4] <- t_test_result$parameter[1]
+      matM2[iTask,5] <- t_test_result$p.value[1]
+  }
+  # convert matM2 to a data frame and add column/row names
+  matM2_df <- data.frame(matM2)
+  colnames(matM2_df) <- c("Reward (M)", "Reward (SE)", "t-value", "d.o.f.","p-value")
+  rownames(matM2_df) <- c("Visual", "Cognitive", "Social", "Monetary")
+  stats <- list()
+  stats$matM2_df<-matM2_df
+  return(stats)
+}
+# get table (reward - alternative versus vertical -horizontal)
+strctRvsN<-getTableAllRvsN(rewardLiking1,alternativeLiking1)
+ print(strctRvsN$matM2_df)
+stats$Exp1 <- list(
+    responses = list(
+      liking_AllrewardVSNeutral = strctRvsN$matM2_df
+    )
+  )
+```
+### Wanting Rating
+```{r echo=FALSE}
+rewardWanting1<-lStim1[6:10]
+Y<-rewardWanting1
+wantingResults1 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(Y, mean),
+  SE_Reward_Rating = sapply(Y, sd) / sqrt(nrow(Y)),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$p.value)
+)
+
+print(wantingResults1)
+``` 
+### Reinforcement (proportion of best choice)
+```{r echo=FALSE}
+rewardReinforcement1<-lStim1[11:15]
+Y<-rewardReinforcement1
+reinforcementResults1 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(Y, mean),
+  SE_Reward_Rating = sapply(Y, sd) / sqrt(nrow(Y)),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$p.value)
+)
+print(reinforcementResults1)
+
+# get post-learning choice session
+## create a function
+getTablePostRLChoice<-function(rewardReinforcement1){
+  rewardLiking_mtx=as.matrix(rewardLiking)
+  alternativeLiking_mtx=as.matrix(alternativeLiking)
+  matP <- matrix(NA, nrow=5, ncol=5)
+  matSE <- matrix(NA, nrow=5, ncol=5)
+  matM2 <- matrix("", nrow=5, ncol=5)
+  for (iTask in 1:5) {
+    for (jTask in 1:5) {
+      # perform t-test
+      diff <- rewardLiking_mtx[,iTask] - alternativeLiking_mtx[, jTask]
+      t_test_result <- t.test(diff)
+      matP[iTask, jTask] <- t_test_result$p.value
+      matSE[iTask, jTask] <- t_test_result$stderr
+      matM2[iTask, jTask] <- paste0(round(mean(diff), 1), "±", round(matSE[iTask, jTask], 1))
+    }
+  }
+  # convert matM2 to a data frame and add column/row names
+  matM2_df <- data.frame(matM2)
+  colnames(matM2_df) <- c("Wall", "Letters", "Disconfirmation", "NoCoin", "Horizontal")
+  rownames(matM2_df) <- c("Landscape", "Information", "Confirmation", "Coin", "Vertical")
+  stats <- list()
+  stats$matM2_df<-matM2_df
+  stats$matP<-matP
+  return(stats)
+}
+``` 
+## Experiment 2
+### Liking Rating
+```{r echo=FALSE}
+Y<-rewardLiking2
+Z<-alternativeLiking2
+likingResults2 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(Y, mean),
+  SE_Reward_Rating = sapply(Y, sd) / sqrt(nrow(Y)),
+  Avg_Alternative_Rating = sapply(Z, mean),
+  SE_Alternative_Rating = sapply(Z, sd) / sqrt(nrow(Z)),
+  Diff_Avg = sapply(Y, mean) - sapply(Z, mean),
+  SE_Diff = sqrt((sapply(Y, sd)^2/nrow(Y)) +   (sapply(Z, sd)^2/nrow(Z))),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), as.matrix(Z[,i]),paired=TRUE)$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), as.matrix(Z[,i]),paired=TRUE)$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), as.matrix(Z[,i]),paired=TRUE)$p.value)
+)
+print(likingResults2)
+
+# Liking reward against each alternative
+strctRvsAll<-getTableAllRvsA(rewardLiking2,alternativeLiking2)
+ print(strctRvsAll$matM2_df)
+  print(strctRvsAll$matP)
+stats <- list()
+
+# get table (reward - alternative versus vertical -horizontal)
+strctRvsN<-getTableAllRvsN(rewardLiking2,alternativeLiking2)
+ print(strctRvsN$matM2_df)
+stats$Exp2 <- list(
+    responses = list(
+      liking_AllrewardVSNeutral = strctRvsN$matM2_df
+    )
+  )
+
+```
+### Wanting Rating
+```{r echo=FALSE}
+rewardWanting2<-lStim2[6:10]
+Y<-rewardWanting2
+wantingResults2 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(Y, mean),
+  SE_Reward_Rating = sapply(Y, sd) / sqrt(nrow(Y)),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$p.value)
+)
+print(wantingResults2)
+``` 
+### Reinforcement (proportion of best choice)
+```{r echo=FALSE}
+rewardReinforcement2<-lStim2[11:15]
+Y<-rewardReinforcement2
+reinforcementResults2 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(Y, mean),
+  SE_Reward_Rating = sapply(Y, sd) / sqrt(nrow(Y)),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$p.value)
+)
+print(reinforcementResults2)
+``` 
+## Experiment 3
+### Liking Rating
+```{r echo=FALSE}
+Y<-rewardLiking3
+Z<-alternativeLiking3
+likingResults3 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(Y, mean),
+  SE_Reward_Rating = sapply(Y, sd) / sqrt(nrow(Y)),
+  Avg_Alternative_Rating = sapply(Z, mean),
+  SE_Alternative_Rating = sapply(Z, sd) / sqrt(nrow(Z)),
+  Diff_Avg = sapply(Y, mean) - sapply(Z, mean),
+  SE_Diff = sqrt((sapply(Y, sd)^2/nrow(Y)) +   (sapply(Z, sd)^2/nrow(Z))),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), as.matrix(Z[,i]),paired=TRUE)$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), as.matrix(Z[,i]),paired=TRUE)$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), as.matrix(Z[,i]),paired=TRUE)$p.value)
+)
+print(likingResults3)
+
+# Liking reward against each alternative
+strctRvsAll<-getTableAllRvsA(rewardLiking3,alternativeLiking3)
+  print(strctRvsAll$matM2_df)
+  print(strctRvsAll$matP)
+  
+# get table (reward - alternative versus vertical -horizontal)
+strctRvsN<-getTableAllRvsN(rewardLiking3,alternativeLiking3)
+ print(strctRvsN$matM2_df)
+stats$Exp3 <- list(
+    responses = list(
+      liking_AllrewardVSNeutral = strctRvsN$matM2_df
+    )
+  )
+
+```
+### Wanting proportion
+```{r echo=FALSE}
+rewardWanting3<-lStim3[6:10]
+Y<-rewardWanting3
+wantingResults3 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(Y, mean),
+  SE_Reward_Rating = sapply(Y, sd) / sqrt(nrow(Y)),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$p.value)
+)
+print(wantingResults3)
+``` 
+### Reinforcement (proportion of best choice)
+```{r echo=FALSE}
+rewardReinforcement3<-lStim3[11:15]
+Y<-rewardReinforcement3
+reinforcementResults3 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(Y, mean),
+  SE_Reward_Rating = sapply(Y, sd) / sqrt(nrow(Y)),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$p.value)
+)
+print(reinforcementResults3)
+```
+## Violin plots
+```{r echo=FALSE}
+# Convert matrix to data frame
+
+get_df_long<-function(lStim){
+liking <- as.data.frame(lStim[1:5])
+wanting <- as.data.frame(lStim[6:10])
+reinforcing <- as.data.frame(lStim[11:15])
+# Add variable names
+names(liking) <- c("Visual", "Cognitive", "Social", "Monetary", "Neutral")
+names(wanting) <- c("Visual", "Cognitive", "Social", "Monetary", "Neutral")
+names(reinforcing) <- c("Visual", "Cognitive", "Social", "Monetary", "Neutral")
+# Convert data frame from wide to long format
+df_longL <- pivot_longer(liking, cols = everything(), names_to = "variable", values_to = "value")
+df_longW <- pivot_longer(wanting, cols = everything(), names_to = "variable", values_to = "value")
+df_longR <- pivot_longer(reinforcing, cols = everything(), names_to = "variable", values_to = "value")
+df_list <- list(df_longL, df_longW, df_longR)
+}
+
+violin_plot<-function(df_long,intercept,text){
+  # Define variable order
+variable_order <- c("Visual", "Cognitive", "Social", "Monetary", "Neutral")
+# Create a vector with the colors for each variable
+colors <- c("orange", "cyan3", "grey", "orange", "orange")
+# Create the violin plot with overlaid data points and boxplot ,adjust=0.3
+  vp0<-ggplot(df_long, aes(x = factor(variable, levels = variable_order), y = value, fill = factor(variable))) +
+    geom_violin(width = 1, alpha = 0.4,scale = "width" ,adjust=1,color=NA)+
+   ggbeeswarm::geom_quasirandom(shape = 21,size=2, dodge.width = .75, color="grey",alpha=.4,show.legend = F)+
+  geom_boxplot(width = 0.1, outlier.shape = NA, alpha = 1) +
+  geom_hline(yintercept=intercept,linetype=2)+
+  scale_fill_manual(values = colors) +
+  scale_color_manual(values = colors) +
+  theme_minimal() +
+  labs(x = "", y = "Value")
+  if(text==0){
+  vp<-vp0+theme(legend.position = "none",axis.text.y=element_text(size=14,colour="black"),axis.text.x=element_blank(),plot.margin = margin(0, 0, 0, 0, "pt"))
+  } else {
+   vp<-vp0+ theme(legend.position = "none",axis.text=element_text(size=14,colour="black"),plot.margin = margin(0, 0, 0, 0, "pt"))
+  }
+  return(vp)
+}
+
+# Experiment 1
+df_long<-get_df_long(lStim1)
+p1<-violin_plot(df_long[[1]],0,0)
+p2<-violin_plot(df_long[[2]],50,0)
+p3<-violin_plot(df_long[[3]],50,1)
+p1 + p2 + p3 + plot_layout(ncol = 1)
+# Experiment 2
+df_long<-get_df_long(lStim2)
+p1<-violin_plot(df_long[[1]],0,0)
+p2<-violin_plot(df_long[[2]],50,0)
+p3<-violin_plot(df_long[[3]],50,1)
+p1 + p2 + p3 + plot_layout(ncol = 1)
+# Experiment 3
+df_long<-get_df_long(lStim3)
+p1<-violin_plot(df_long[[1]],0,0)
+p2<-violin_plot(df_long[[2]],50,0)
+p3<-violin_plot(df_long[[3]],50,1)
+p1 + p2 + p3 + plot_layout(ncol = 1)
+
+```
+
+# Factor Analysis on questionnaires
+## Experiment 1
+```{r echo=FALSE}
+# all experiments
+rep          <- 100 # Number of replications for PA analysis
+cent         <- 0.95 # Centile value of PA analysis
+
+# exp 1
+X<-lQuest1
+# How many factors ? 
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+
+# plot explained variance
+VE=fa.none$Vaccounted[4,]*100
+sVE=fa.none$Vaccounted[5,]*100
+nb=c(1,2,3)
+df<-data.frame(VE,sVE,nb)
+ggp<- ggplot(df)+
+  geom_bar(aes(x=nb,y=VE), stat="identity",fill="black")+
+  geom_line(aes(x=nb,y=sVE),stat="identity",color="grey",size=1.5)+
+  geom_point(aes(x=nb,y=sVE),size=5,shape=21,color="grey")+
+  labs(x="Factor number",y="% Variance Explained")+
+  theme_bw(base_size = 26) +
+  theme(axis.line = element_line(color='black'),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank())
+ggp
+# plot the loadings  
+par(mar=c(6,12,4,4))
+barplot(height=-fa.none$loadings[,1], horiz=T,main="Questionnaires 1st Factor",xlab="Factor loadings",
+names.arg=c("PHQ","AES-Behaviour","AES-Cognition","AES-Emotion","AES-other", "SHAPS-Social","SHAPS-Food","SHAPS-Perceptual","SHAPS-PastTime","DOPS-PersonnalAchievement","DOPS-Sex","DOPS-Social","DOPS-Perceptual","LifeHappiness","CurrentHappiness"),las=1,cex.axis=2,cex.names=1,cex.lab=2,cex.main=2,xlim=c(-0.8,0.8))
+scoreFA_PP1<--fa.none$scores[,1]
+```
+
+## Experiment 2
+```{r echo=FALSE}
+X<-lQuest2
+# How many factors ? 
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+
+# plot the explained variance
+VE=fa.none$Vaccounted[4,]*100
+sVE=fa.none$Vaccounted[5,]*100
+nb=c(1,2,3)
+df<-data.frame(VE,sVE,nb)
+ggp<- ggplot(df)+
+  geom_bar(aes(x=nb,y=VE), stat="identity",fill="black")+
+  geom_line(aes(x=nb,y=sVE),stat="identity",color="grey",size=1.5)+
+  geom_point(aes(x=nb,y=sVE),size=5,shape=21,color="grey")+
+  labs(x="Factor number",y="% Variance Explained")+
+  theme_bw(base_size = 26) +
+  theme(axis.line = element_line(color='black'),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank())
+ggp
+
+# plot the loadings  
+par(mar=c(6,12,4,4))
+barplot(height=-fa.none$loadings[,1], horiz=T,main="Questionnaires 1st Factor",xlab="Factor loadings",
+names.arg=c("PHQ","AES-Behaviour","AES-Cognition","AES-Emotion","AES-other", "SHAPS-Social","SHAPS-Food","SHAPS-Perceptual","SHAPS-PastTime","DOPS-PersonnalAchievement","DOPS-Sex","DOPS-Social","DOPS-Perceptual","LifeHappiness","CurrentHappiness"),las=1,cex.axis=2,cex.names=1,cex.lab=2,cex.main=2,xlim=c(-0.8,0.8))
+scoreFA_PP2<--fa.none$scores[,1]
+```
+## Experiment 3
+```{r echo=FALSE}
+X<-lQuest3
+
+# How many factors ? 
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+
+# plot variance explained
+VE=fa.none$Vaccounted[4,]*100
+sVE=fa.none$Vaccounted[5,]*100
+nb=c(1,2,3)
+df<-data.frame(VE,sVE,nb)
+ggp<- ggplot(df)+
+  geom_bar(aes(x=nb,y=VE), stat="identity",fill="black")+
+  geom_line(aes(x=nb,y=sVE),stat="identity",color="grey",size=1.5)+
+  geom_point(aes(x=nb,y=sVE),size=5,shape=21,color="grey")+
+  labs(x="Factor number",y="% Variance Explained")+
+  theme_bw(base_size = 26) +
+  theme(axis.line = element_line(color='black'),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank())
+ggp
+
+# plot loadings
+par(mar=c(6,12,4,4))
+barplot(height=-fa.none$loadings[,1], horiz=T,main="Questionnaires 1st Factor",xlab="Factor loadings",
+names.arg=c("PHQ","AES-Behaviour","AES-Cognition","AES-Emotion","AES-other", "SHAPS-Social","SHAPS-Food","SHAPS-Perceptual","SHAPS-PastTime","DOPS-PersonnalAchievement","DOPS-Sex","DOPS-Social","DOPS-Perceptual","LifeHappiness","CurrentHappiness"),las=1,cex.axis=2,cex.names=1,cex.lab=2,cex.main=2,xlim=c(-0.8,0.8))
+scoreFA_PP3<--fa.none$scores[,1]
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+```
+
+# Reward sensitivity is partially domain general
+
+Next, we tested whether the sensitivity to intrinsic reward is domain general. In other words, if a particular participant finds the visual reward rewarding, will they be more likely to find the cognitive and the social reward rewarding? Will they also find the monetary reward more rewarding? Next, we asked whether the ‘reward sensitivity’ score is related to affective aspects of mental health. That is, do people with high reward sensitivity experience better affective health?
+
+# Reward data factorability
+
+## Experiment 1
+```{r echo=FALSE}
+# for all experiments: 
+cor.mtest <- function(mat, ...) {
+    mat <- as.matrix(mat)
+    n <- ncol(mat)
+    p.mat<- matrix(NA, n, n)
+    diag(p.mat) <- 0
+    for (i in 1:(n - 1)) {
+        for (j in (i + 1):n) {
+            tmp <- cor.test(mat[, i], mat[, j], ...)
+            p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
+        }
+    }
+  colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
+  p.mat
+}
+# exp 1: 
+# matrix of the p-value of the correlation
+p.mat <- cor.mtest(lStim1)
+M<-round(cor(lStim1),2)
+colnames(M) <- c("Liking Visual", "Liking Cognitive", "Liking Social", "Liking Monetary", "Liking Neutral", 
+                          "Wanting Visual", "Wanting Cognitive", "Wanting Social", "Wanting Monetary", "Wanting Neutral",
+                          "Reinforcement Visual", "Reinforcement Cognitive", "Reinforcement Social", "Reinforcement Monetary", "Reinforcement Neutral")
+rownames(M) <- colnames(M)
+corrplot(M,method="color", type="full", tl.col="black", tl.srt=90, tl.cex=0.8, addCoef.col="black", number.cex=0.8, p.mat = p.mat, sig.level = 0.1,insig = "blank")
+
+# Correlation matrix & factorability of the data
+cortest.bartlett(lStim1)# small p-value is good
+det(cor(lStim1))# positive determinant means the FA analysis will run
+KMO(cor(lStim1))
+KMO(cor(lStim2))
+KMO(cor(lStim3))
+
+```
+## Experiment 2
+```{r echo=FALSE}
+# Correlation matrix & factorability of the data
+p.mat <- cor.mtest(lStim2)
+M<-round(cor(lStim2),2)
+colnames(M) <- c("Liking Visual", "Liking Cognitive", "Liking Social", "Liking Monetary", "Liking Neutral", 
+                          "Wanting Visual", "Wanting Cognitive", "Wanting Social", "Wanting Monetary", "Wanting Neutral",
+                          "Reinforcement Visual", "Reinforcement Cognitive", "Reinforcement Social", "Reinforcement Monetary", "Reinforcement Neutral")
+rownames(M) <- colnames(M)
+corrplot(M,method="color", type="full", tl.col="black", tl.srt=90, tl.cex=0.8, addCoef.col="black", number.cex=0.8, p.mat = p.mat, sig.level = 0.1,insig = "blank")
+
+cortest.bartlett(lStim2)# small p-value is good
+det(cor(lStim2))# positive determinant means the FA analysis will run
+```
+## Experiment 3
+```{r echo=FALSE}
+# Correlation matrix & factorability of the data
+p.mat <- cor.mtest(lStim3)
+M<-round(cor(lStim3),2)
+colnames(M) <- c("Liking Visual", "Liking Cognitive", "Liking Social", "Liking Monetary", "Liking Neutral", 
+                          "Wanting Visual", "Wanting Cognitive", "Wanting Social", "Wanting Monetary", "Wanting Neutral",
+                          "Reinforcement Visual", "Reinforcement Cognitive", "Reinforcement Social", "Reinforcement Monetary", "Reinforcement Neutral")
+rownames(M) <- colnames(M)
+corrplot(M,method="color", type="full", tl.col="black", tl.srt=90, tl.cex=0.8, addCoef.col="black", number.cex=0.8, p.mat = p.mat, sig.level = 0.1,insig = "blank")
+
+cortest.bartlett(lStim3)# small p-value is good
+det(cor(lStim3))# positive determinant means the FA analysis will run
+```
+
+# Reward data factor analysis
+## Experiment 1
+```{r echo=FALSE}
+# define functions
+plot_loadings<-function(factor,nb){
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,1,2,3,1,1,1,2,3,1,1,1,2,3))
+bp<-barplot(height=rev(factor), horiz=T,main=paste("Factor",nb),xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Social","Liking Monetary","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Social","Wanting Monetary","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Social","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+}
+
+X<-lStim1
+# How many factors ? 
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.exp1all <- fa(r=X, nfactors= 3,fm='ml',max.iter=100,rotate='bifactor')
+fa.none<-fa.exp1all
+
+# plot variance explained
+VE=fa.none$Vaccounted[4,]*100
+sVE=fa.none$Vaccounted[5,]*100
+nb=c(1,2,3)
+df<-data.frame(VE,sVE,nb)
+ggp<- ggplot(df)+
+  geom_bar(aes(x=nb,y=VE), stat="identity",fill="black")+
+  geom_line(aes(x=nb,y=sVE),stat="identity",color="grey",size=1.5)+
+  geom_point(aes(x=nb,y=sVE),size=5,shape=21,color="grey")+
+  labs(x="Factor number",y="% Variance Explained")+
+  theme_bw(base_size = 26) +
+  theme(axis.line = element_line(color='black'),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank())
+ggp
+
+# plot loadings
+plot_loadings(fa.none$loadings[,1],1)
+plot_loadings(fa.none$loadings[,2],2)
+plot_loadings(fa.none$loadings[,3],3)
+scoreFA_R1<-fa.none$scores
+```
+```{r echo=FALSE}
+
+mentalHealth<- scoreFA_PP1
+rewardSensitivity<- scoreFA_R1[,1]
+df<-data.frame(mentalHealth,rewardSensitivity,lDemo1)
+linearMod <- lm( mentalHealth ~ rewardSensitivity, data=df,na.action=na.exclude)
+
+#calculate DFFITS for each observation in the model
+dffits <- as.data.frame(dffits(linearMod))
+#find number of predictors in model
+p <- length(linearMod$coefficients)-1
+#find number of observations
+n <- nrow(lStim1)
+#calculate DFFITS threshold value
+thresh <- 2*sqrt(p/n)
+ioi<-dffits<thresh & dffits>-thresh
+# remove outliers
+mentalHealth_NoOutlier<-subset(scoreFA_PP1,ioi)
+rewardSensitivity_NoOutlier<-subset(scoreFA_R1[,1],ioi)
+demo_NO<- subset(lDemo1,ioi)
+df<-data.frame(mentalHealth_NoOutlier,rewardSensitivity_NoOutlier,demo_NO)
+
+# model fit
+linearModDemo1 <- lm( mentalHealth_NoOutlier ~ gender+age+iq+edu+income+rewardSensitivity_NoOutlier, data=df)
+summary(linearModDemo1)
+linearMod1 <- lm(mentalHealth_NoOutlier ~ rewardSensitivity_NoOutlier, data=df)
+summary(linearMod1)
+
+# create table
+getLinearModelTable<-function(model){
+  model_summary <- summary(model)
+  nReward<-nrow(model_summary$coefficients)
+  RewardFactorCoefficients <- model_summary$coefficients[nReward, 1]
+  standard_errors <- model_summary$coefficients[nReward, 2]
+  degrees_of_freedom <- model_summary$df[2]
+  t_values <- model_summary$coefficients[nReward, 3]
+  p_values <- model_summary$coefficients[nReward, 4]
+  data.frame(RewardFactorCoefficients, standard_errors, degrees_of_freedom, t_values, p_values)
+}
+summary1 <- getLinearModelTable(linearModDemo1)
+summary2 <- getLinearModelTable(linearMod1)
+
+
+reinforcementResults3 <- data.frame(
+  Stimulus = c("Visual", "Cognitive", "Social", "Monetary", "Neutral"),
+  Avg_Reward_Rating = sapply(Y, mean),
+  SE_Reward_Rating = sapply(Y, sd) / sqrt(nrow(Y)),
+  t_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$statistic),
+  df = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$parameter),
+  p_value = sapply(1:5, function(i) t.test(as.matrix(Y[,i]), mu = 50, alternative = "two.sided")$p.value)
+)
+print(reinforcementResults3)
+
+# get and organise stats
+model <- linearModDemo1
+y <- model$residuals + model$fitted.values
+x1 <- model$model[, "rewardSensitivity_NoOutlier"]
+df <- data.frame(x1 = x1, y = y)
+bin_data <- df %>%
+  mutate(bin = cut(x1, breaks = 6)) %>%
+  group_by(bin) %>%
+  summarize(y.mean = mean(y),
+            y.sd = sd(y),
+            x1.mean = mean(x1)) %>%
+  ungroup()
+nsub=dim(df)
+
+# plot the relationship
+plot<-ggplot(df, aes(x = x1, y = y))+
+  geom_point(color="grey")+
+  geom_point(data = bin_data, aes(x = x1.mean, y = y.mean), size = 2)+
+  geom_smooth(method = "lm", se = TRUE, color="green4",size=1.5, fill="#98FB98")+
+  geom_errorbar(data = bin_data, aes(x = x1.mean, y = y.mean, ymin = y.mean - y.sd/sqrt(length(x1)), ymax = y.mean + y.sd/sqrt(length(x1))), width = 0.2,size=1) +
+labs(x="Reward sensitivity",y="Mental Health score")+
+  theme_bw(base_size = 22) +
+  theme(axis.line = element_line(color='black'),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank())
+print(plot)
+```
+
+## Experiment 2
+```{r echo=FALSE}
+X<-lStim2
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 3,fm='ml',max.iter=100,rotate='bifactor')#
+
+# plot explained variance
+VE=fa.none$Vaccounted[4,]*100
+sVE=fa.none$Vaccounted[5,]*100
+nb=c(1,2,3)
+df<-data.frame(VE,sVE,nb)
+ggp<- ggplot(df)+
+  geom_bar(aes(x=nb,y=VE), stat="identity",fill="black")+
+  geom_line(aes(x=nb,y=sVE),stat="identity",color="grey",size=1.5)+
+  geom_point(aes(x=nb,y=sVE),size=5,shape=21,color="grey")+
+  labs(x="Factor number",y="% Variance Explained")+
+  theme_bw(base_size = 26) +
+  theme(axis.line = element_line(color='black'),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank())
+ggp
+
+# plot loadings
+plot_loadings(fa.none$loadings[,1],1)
+plot_loadings(fa.none$loadings[,2],2)
+plot_loadings(fa.none$loadings[,3],3)
+scoreFA_R2<-fa.none$scores
+```
+
+```{r echo=FALSE}
+
+mentalHealth<-scoreFA_PP2
+rewardSensitivity<-scoreFA_R2[,1]
+df<-data.frame(mentalHealth,rewardSensitivity,lDemo2)
+linearMod <- lm( mentalHealth ~ rewardSensitivity, data=df,na.action=na.exclude)
+
+#calculate DFFITS for each observation in the model
+dffits <- as.data.frame(dffits(linearMod))
+#find number of predictors in model
+p <- length(linearMod$coefficients)-1
+#find number of observations
+n <- nrow(lStim2)
+#calculate DFFITS threshold value
+thresh <- 2*sqrt(p/n)
+ioi<-dffits<thresh & dffits>-thresh
+
+# model fit without outliers
+mentalHealth_NoOutlier<- subset(scoreFA_PP2,ioi)
+rewardSensitivity_NoOutlier<-subset(scoreFA_R2[,1],ioi)
+demo_NO<- subset(lDemo2,ioi)
+df<-data.frame(mentalHealth_NoOutlier,rewardSensitivity_NoOutlier,demo_NO)
+linearModDemo2 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+rewardSensitivity_NoOutlier, data=df)
+summary(linearModDemo2)
+linearMod2 <- lm(mentalHealth_NoOutlier ~ rewardSensitivity_NoOutlier, data=df)
+summary(linearMod2)
+summary3 <- getLinearModelTable(linearModDemo2)
+summary4 <- getLinearModelTable(linearMod2)
+
+
+# organise data
+model <- linearModDemo2
+y <- model$residuals + model$fitted.values
+x1 <- model$model[, "rewardSensitivity_NoOutlier"]
+df <- data.frame(x1 = x1, y = y)
+bin_data <- df %>%
+  mutate(bin = cut(x1, breaks = 6)) %>%
+  group_by(bin) %>%
+  summarize(y.mean = mean(y),
+            y.sd = sd(y),
+            x1.mean = mean(x1)) %>%
+  ungroup()
+nsub=dim(df)
+
+# plot the relationship
+plot<-ggplot(df, aes(x = x1, y = y))+
+  geom_point(color="grey")+
+  geom_point(data = bin_data, aes(x = x1.mean, y = y.mean), size = 2)+
+  geom_smooth(method = "lm", se = TRUE, color="green4",size=1.5, fill="#98FB98")+
+  geom_errorbar(data = bin_data, aes(x = x1.mean, y = y.mean, ymin = y.mean - y.sd/sqrt(length(x1)), ymax = y.mean + y.sd/sqrt(length(x1))), width = 0.2,size=1) +
+labs(x="Reward sensitivity",y="Mental Health score")+
+  theme_bw(base_size = 20) +
+  theme(axis.line = element_line(color='black'),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank())
+print(plot)
+```
+
+## Experiment 3
+```{r echo=FALSE}
+X<-lStim3
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 4,fm='ml',max.iter=100,rotate='bifactor')
+
+# plot explained variance
+VE=fa.none$Vaccounted[4,]*100
+sVE=fa.none$Vaccounted[5,]*100
+nb=c(1,2,3,4)
+df<-data.frame(VE,sVE,nb)
+ggp<- ggplot(df)+
+  geom_bar(aes(x=nb,y=VE), stat="identity",fill="black")+
+  geom_line(aes(x=nb,y=sVE),stat="identity",color="grey",size=1.5)+
+  geom_point(aes(x=nb,y=sVE),size=5,shape=21,color="grey")+
+  labs(x="Factor number",y="% Variance Explained")+
+  theme_bw(base_size = 26) +
+  theme(axis.line = element_line(color='black'),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank())
+ggp
+
+# plot loadings
+plot_loadings(fa.none$loadings[,1],1)
+plot_loadings(fa.none$loadings[,2],2)
+plot_loadings(fa.none$loadings[,3],3)
+plot_loadings(fa.none$loadings[,4],4)
+
+scoreFA_R3<-fa.none$scores
+```
+
+```{r echo=FALSE}
+# relation to psychopathology
+mentalHealth<-scoreFA_PP3
+rewardSensitivity<-scoreFA_R3[,1]
+df<-data.frame(mentalHealth,rewardSensitivity)
+linearMod <- lm( mentalHealth ~ rewardSensitivity, data=df)
+
+#calculate DFFITS for each observation in the model
+dffits <- as.data.frame(dffits(linearMod))
+#find number of predictors in model
+p <- length(linearMod$coefficients)-1
+#find number of observations
+n <- nrow(lStim3)
+#calculate DFFITS threshold value
+thresh <- 2*sqrt(p/n)
+ioi<-dffits<thresh & dffits>-thresh
+
+
+# fit models without outliers
+mentalHealth_NoOutlier<- subset(scoreFA_PP3,ioi)
+rewardSensitivity_NoOutlier<-subset(scoreFA_R3[,1],ioi)
+demo_NO<- subset(lDemo3,ioi)
+rewardSensitivity_NoOutlier2<-rewardSensitivity_NoOutlier^2
+df<-data.frame(mentalHealth_NoOutlier,rewardSensitivity_NoOutlier,rewardSensitivity_NoOutlier2,demo_NO)
+linearModDemo3 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+rewardSensitivity_NoOutlier, data=df)
+summary(linearModDemo3)
+linearMod3 <- lm(mentalHealth_NoOutlier ~ rewardSensitivity_NoOutlier, data=df)
+summary(linearMod3)
+
+summary5 <- getLinearModelTable(linearModDemo3)
+summary6 <- getLinearModelTable(linearMod3)
+
+
+results_table <- bind_rows(summary1, summary2,summary3, summary4,summary5, summary6)
+rownames(results_table) <- c("Experiment 1, Controlling for demographics", "Experiment 1, not controlling for demographics","Experiment 2, Controlling for demographics", "Experiment 2, not controlling for demographics","Experiment 3, Controlling for demographics", "Experiment 3, not controlling for demographics")
+print(results_table)
+
+
+# organise the data
+model <- linearModDemo3
+y <- model$residuals + model$fitted.values
+x1 <- model$model[, "rewardSensitivity_NoOutlier"]
+df <- data.frame(x1 = x1, y = y)
+bin_data <- df %>%
+  mutate(bin = cut(x1, breaks = 6)) %>%
+  group_by(bin) %>%
+  summarize(y.mean = mean(y),
+            y.sd = sd(y),
+            x1.mean = mean(x1)) %>%
+  ungroup()
+nsub=dim(df)
+
+# plot the relationship
+plot<-ggplot(df, aes(x = x1, y = y))+
+  geom_point(color="grey")+
+  geom_point(data = bin_data, aes(x = x1.mean, y = y.mean), size = 2)+
+  geom_smooth(method = "lm", se = TRUE, color="green4",size=1.5, fill="#98FB98")+
+  geom_errorbar(data = bin_data, aes(x = x1.mean, y = y.mean, ymin = y.mean - y.sd/sqrt(length(x1)), ymax = y.mean + y.sd/sqrt(length(x1))), width = 0.2,size=1) +
+labs(x="Reward sensitivity",y="Mental Health score")+
+  theme_bw(base_size = 20) +
+  theme(axis.line = element_line(color='black'),
+    plot.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_blank())
+print(plot)
+
+```
+
+# Is intrinsic reward more related to mental health than monetary reward? 
+
+## Factor analyses separately for intrinsic and monetary rewards
+
+### Experiment 1
+#### Intrinsic reward factorisation
+```{r echo=FALSE}
+names(lStim1)[1:5] <- c('LikingV','LikingC','LikingS','LikingM', "LikingN")
+names(lStim2)[1:5] <- c('LikingV','LikingC','LikingS','LikingM', "LikingN")
+names(lStim3)[1:5] <- c('LikingV','LikingC','LikingS','LikingM', "LikingN")
+X<-subset(lStim1, select=c('LikingV','LikingC','LikingS','LikingN','WantingV','WantingC','WantingS','WantingN','LearningV','LearningC','LearningS','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 4,fm='ols',max.iter=100,rotate='bifactor')
+
+# plot and store loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,1,3,1,1,1,3,1,1,1,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1st Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Social","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Social","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Social","Reinforcing Neutral")),las=1)
+scoreFA_IR1<-fa.none$scores
+
+```
+#### Monetary reward factorisation
+```{r echo=FALSE}
+X<-subset(lStim1, select=c('LikingM','LikingN','WantingM','WantingN','LearningM','LearningN'))
+
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+
+# plot and store loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(2,3,2,3,2,3))
+barplot(height=rev(fa.none$loadings[,2]), horiz=T,main="Monetary reward 2nd Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Monetary","Liking Neutral","Wanting Monetary","Wanting Neutral","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+scoreFA_MR1<-fa.none$scores
+```
+#### Relation to mental health
+```{r echo=FALSE}
+# remove outliers driving the results
+irSensitivity<-scoreFA_IR1[,1]
+mrSensitivity<-scoreFA_MR1[,2]
+mentalHealth<-scoreFA_PP1
+df<-data.frame(mentalHealth,irSensitivity,mrSensitivity,lDemo1)
+linearMod <- lm( mentalHealth ~ irSensitivity+mrSensitivity, data=df)
+
+#calculate DFFITS for each observation in the model
+dffits <- as.data.frame(dffits(linearMod))
+#find number of predictors in model
+p <- length(linearMod$coefficients)-1
+#find number of observations
+n <- nrow(lStim1)
+#calculate DFFITS threshold value
+thresh <- 2*sqrt(p/n)
+ioi<-dffits<thresh & dffits>-thresh
+
+# fit the model
+mentalHealth_NoOutlier<-subset(scoreFA_PP1,ioi)
+irSensitivity_NoOutlier<-subset(scoreFA_IR1[,1],ioi)
+mrSensitivity_NoOutlier<-subset(scoreFA_MR1[,2],ioi)
+demo_NO<- subset(lDemo1,ioi)
+df<-data.frame(mentalHealth_NoOutlier,irSensitivity_NoOutlier,mrSensitivity_NoOutlier,demo_NO)
+
+# Does IR explain mental health while correcting for MR? 
+linearModDemoIRER1 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+irSensitivity_NoOutlier+mrSensitivity_NoOutlier, data=df)
+summary(linearModDemoIRER1)
+linearModIRER1 <- lm(mentalHealth_NoOutlier ~ irSensitivity_NoOutlier+mrSensitivity_NoOutlier, data=df)
+summary(linearModIRER1)
+
+
+# Create a data frame of the coefficients and their standard errors
+model<-linearModIRER1
+coef_df <- data.frame(Coefficient = coef(model)[-1], se = summary(model)$coef[, 2][-1])
+# Set the colors for the bars
+colors <- c("orange","cyan3")
+# Create a bar plot with error bars
+ggplot(coef_df, aes(x = rownames(coef_df), y = Coefficient, fill = rownames(coef_df))) +
+  geom_hline(yintercept = 0, color = "black") +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_bar(stat = "identity", width = 0.5, color = "black") +
+  geom_errorbar(aes(ymin = Coefficient - se, ymax = Coefficient + se), width = 0.2) +
+  scale_fill_manual(values = colors) +
+  scale_y_continuous(limits = c(-0.4, 0.4)) +
+  scale_x_discrete(labels = c("Intrinsic", "Monetary")) +
+  labs(x = "Reward type", y = "Coefficient") +
+  guides(fill = FALSE) +
+  theme_bw()+
+  theme(axis.text.x = element_text(size = 16),
+        axis.text.y = element_text(size = 16),
+        axis.title.x = element_text(size = 18),
+        axis.title.y = element_text(size = 18),
+        axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+
+# Does IR explain mental health better than ER? 
+linearModIR1 <- lm(mentalHealth_NoOutlier ~ irSensitivity_NoOutlier, data=df)
+summary(linearModIR1)
+linearModDemoIR1 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+irSensitivity_NoOutlier, data=df)
+summary(linearModDemoIR1)
+linearModMR1 <- lm(mentalHealth_NoOutlier ~ mrSensitivity_NoOutlier, data=df)
+summary(linearModMR1)
+linearModDemoMR1 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+mrSensitivity_NoOutlier, data=df)
+summary(linearModDemoMR1)
+
+summaryDemoIR1 <- getLinearModelTable(linearModDemoIR1)
+summaryIR1 <- getLinearModelTable(linearModIR1)
+summaryDemoMR1 <- getLinearModelTable(linearModDemoMR1)
+summaryMR1 <- getLinearModelTable(linearModMR1)
+
+print(summaryDemoIR1$BIC<-BIC(linearModDemoIR1))
+print(summaryDemoMR1$BIC<-BIC(linearModDemoMR1))
+print(summaryDemoIR1$deltaBIC<-BIC(linearModDemoIR1)-BIC(linearModDemoIR1))
+print(summaryDemoMR1$deltaBIC<-BIC(linearModDemoMR1)-BIC(linearModDemoIR1))
+
+print(summaryIR1$BIC<-BIC(linearModIR1))
+print(summaryMR1$BIC<-BIC(linearModMR1))
+print(summaryIR1$deltaBIC<-BIC(linearModIR1)-BIC(linearModIR1))
+print(summaryMR1$deltaBIC<-BIC(linearModMR1)-BIC(linearModIR1))
+```
+### Experiment 2
+#### Intrinsic reward factorisation
+```{r echo=FALSE}
+X<-subset(lStim2, select=c('LikingV','LikingC','LikingS','LikingN','WantingV','WantingC','WantingS','WantingN','LearningV','LearningC','LearningS','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 4,fm='ols',max.iter=100,rotate='bifactor')
+
+# plot and store loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,1,3,1,1,1,3,1,1,1,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1st Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Social","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Social","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Social","Reinforcing Neutral")),las=1)
+scoreFA_IR2<-fa.none$scores
+
+```
+#### Monetary reward factorisation
+```{r echo=FALSE}
+X<-subset(lStim2, select=c('LikingM','LikingN','WantingM','WantingN','LearningM','LearningN'))
+
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+
+# plot and store loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(2,3,2,3,2,3))
+barplot(height=rev(fa.none$loadings[,2]), horiz=T,main="Monetary reward 2nd Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Monetary","Liking Neutral","Wanting Monetary","Wanting Neutral","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+scoreFA_MR2<-fa.none$scores
+```
+#### Relation to mental health
+```{r echo=FALSE}
+# remove outliers driving the results
+irSensitivity<-scoreFA_IR2[,1]
+mrSensitivity<-scoreFA_MR2[,2]
+mentalHealth<-scoreFA_PP2
+df<-data.frame(mentalHealth,irSensitivity,mrSensitivity,lDemo2)
+linearMod <- lm( mentalHealth ~ irSensitivity+mrSensitivity, data=df)
+
+#calculate DFFITS for each observation in the model
+dffits <- as.data.frame(dffits(linearMod))
+#find number of predictors in model
+p <- length(linearMod$coefficients)-1
+#find number of observations
+n <- nrow(lStim2)
+#calculate DFFITS threshold value
+thresh <- 2*sqrt(p/n)
+ioi<-dffits<thresh & dffits>-thresh
+
+# fit the model
+mentalHealth_NoOutlier<-subset(scoreFA_PP2,ioi)
+irSensitivity_NoOutlier<-subset(scoreFA_IR2[,1],ioi)
+mrSensitivity_NoOutlier<-subset(scoreFA_MR2[,2],ioi)
+demo_NO<- subset(lDemo2,ioi)
+df<-data.frame(mentalHealth_NoOutlier,irSensitivity_NoOutlier,mrSensitivity_NoOutlier,demo_NO)
+
+# Does IR explain mental health while correcting for MR? 
+linearModDemoIRER2 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+irSensitivity_NoOutlier+mrSensitivity_NoOutlier, data=df)
+summary(linearModDemoIRER2)
+linearModIRER2 <- lm(mentalHealth_NoOutlier ~ irSensitivity_NoOutlier+mrSensitivity_NoOutlier, data=df)
+summary(linearModIRER2)
+
+# Create a data frame of the coefficients and their standard errors
+model<-linearModIRER2
+coef_df <- data.frame(Coefficient = coef(model)[-1], se = summary(model)$coef[, 2][-1])
+# Set the colors for the bars
+colors <- c("orange","cyan3")
+# Create a bar plot with error bars
+ggplot(coef_df, aes(x = rownames(coef_df), y = Coefficient, fill = rownames(coef_df))) +
+  geom_hline(yintercept = 0, color = "black") +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_bar(stat = "identity", width = 0.5, color = "black") +
+  geom_errorbar(aes(ymin = Coefficient - se, ymax = Coefficient + se), width = 0.2) +
+  scale_fill_manual(values = colors) +
+  scale_y_continuous(limits = c(-0.4, 0.4)) +
+  scale_x_discrete(labels = c("Intrinsic", "Monetary")) +
+  labs(x = "Reward type", y = "Coefficient") +
+  guides(fill = FALSE) +
+  theme_bw()+
+  theme(axis.text.x = element_text(size = 16),
+        axis.text.y = element_text(size = 16),
+        axis.title.x = element_text(size = 18),
+        axis.title.y = element_text(size = 18),
+        axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+
+# Does IR explain mental health better than ER? 
+linearModIR2 <- lm(mentalHealth_NoOutlier ~ irSensitivity_NoOutlier, data=df)
+summary(linearModIR2)
+linearModDemoIR2 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+irSensitivity_NoOutlier, data=df)
+summary(linearModDemoIR2)
+linearModMR2 <- lm(mentalHealth_NoOutlier ~ mrSensitivity_NoOutlier, data=df)
+summary(linearModMR2)
+linearModDemoMR2 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+mrSensitivity_NoOutlier, data=df)
+summary(linearModDemoMR2)
+
+summaryDemoIR2 <- getLinearModelTable(linearModDemoIR2)
+summaryIR2 <- getLinearModelTable(linearModIR2)
+summaryDemoMR2 <- getLinearModelTable(linearModDemoMR2)
+summaryMR2 <- getLinearModelTable(linearModMR2)
+
+print(summaryDemoIR2$BIC<-BIC(linearModDemoIR2))
+print(summaryDemoMR2$BIC<-BIC(linearModDemoMR2))
+print(summaryDemoIR2$deltaBIC<-BIC(linearModDemoIR2)-BIC(linearModDemoIR2))
+print(summaryDemoMR2$deltaBIC<-BIC(linearModDemoMR2)-BIC(linearModDemoIR2))
+
+print(summaryIR2$BIC<-BIC(linearModIR2))
+print(summaryMR2$BIC<-BIC(linearModMR2))
+print(summaryIR2$deltaBIC<-BIC(linearModIR2)-BIC(linearModIR2))
+print(summaryMR2$deltaBIC<-BIC(linearModMR2)-BIC(linearModIR2))
+```
+### Experiment 3
+#### Intrinsic reward factorisation
+```{r echo=FALSE}
+X<-subset(lStim3, select=c('LikingV','LikingC','LikingS','LikingN','WantingV','WantingC','WantingS','WantingN','LearningV','LearningC','LearningS','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+
+# plot and store loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,1,3,1,1,1,3,1,1,1,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1st Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Social","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Social","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Social","Reinforcing Neutral")),las=1)
+scoreFA_IR3<-fa.none$scores
+
+```
+#### Monetary reward factorisation
+```{r echo=FALSE}
+X<-subset(lStim3, select=c('LikingM','LikingN','WantingM','WantingN','LearningM','LearningN'))
+
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+
+# plot and store loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(2,3,2,3,2,3))
+barplot(height=rev(fa.none$loadings[,2]), horiz=T,main="Intrinsic reward 2nd Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Monetary","Liking Neutral","Wanting Monetary","Wanting Neutral","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+scoreFA_MR3<-fa.none$scores
+```
+#### Relation to mental health
+```{r echo=FALSE}
+# remove outliers driving the results
+irSensitivity<-scoreFA_IR3[,1]
+mrSensitivity<-scoreFA_MR3[,2]
+mentalHealth<-scoreFA_PP3
+df<-data.frame(mentalHealth,irSensitivity,mrSensitivity,lDemo3)
+linearMod <- lm( mentalHealth ~ irSensitivity+mrSensitivity, data=df)
+
+#calculate DFFITS for each observation in the model
+dffits <- as.data.frame(dffits(linearMod))
+#find number of predictors in model
+p <- length(linearMod$coefficients)-1
+#find number of observations
+n <- nrow(lStim3)
+#calculate DFFITS threshold value
+thresh <- 2*sqrt(p/n)
+ioi<-dffits<thresh & dffits>-thresh
+
+# fit the model
+mentalHealth_NoOutlier<-subset(scoreFA_PP3,ioi)
+irSensitivity_NoOutlier<-subset(scoreFA_IR3[,1],ioi)
+mrSensitivity_NoOutlier<-subset(scoreFA_MR3[,2],ioi)
+demo_NO<- subset(lDemo3,ioi)
+df<-data.frame(mentalHealth_NoOutlier,irSensitivity_NoOutlier,mrSensitivity_NoOutlier,demo_NO)
+
+# Does IR explain mental health while correcting for MR? 
+linearModDemoIRER3 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+irSensitivity_NoOutlier+mrSensitivity_NoOutlier, data=df)
+summary(linearModDemoIRER3)
+linearModIRER3 <- lm(mentalHealth_NoOutlier ~ irSensitivity_NoOutlier+mrSensitivity_NoOutlier, data=df)
+summary(linearModIRER3)
+
+# Create a data frame of the coefficients and their standard errors
+model<-linearModIRER3
+coef_df <- data.frame(Coefficient = coef(model)[-1], se = summary(model)$coef[, 2][-1])
+# Set the colors for the bars
+colors <- c("orange","cyan3")
+# Create a bar plot with error bars
+ggplot(coef_df, aes(x = rownames(coef_df), y = Coefficient, fill = rownames(coef_df))) +
+  geom_hline(yintercept = 0, color = "black") +
+  geom_vline(xintercept = 0, color = "black") +
+  geom_bar(stat = "identity", width = 0.5, color = "black") +
+  geom_errorbar(aes(ymin = Coefficient - se, ymax = Coefficient + se), width = 0.2) +
+  scale_fill_manual(values = colors) +
+  scale_y_continuous(limits = c(-0.4, 0.4)) +
+  scale_x_discrete(labels = c("Intrinsic", "Monetary")) +
+  labs(x = "Reward type", y = "Coefficient") +
+  guides(fill = FALSE) +
+  theme_bw()+
+  theme(axis.text.x = element_text(size = 16),
+        axis.text.y = element_text(size = 16),
+        axis.title.x = element_text(size = 18),
+        axis.title.y = element_text(size = 18),
+        axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+
+# Does IR explain mental health better than ER? 
+linearModIR3 <- lm(mentalHealth_NoOutlier ~ irSensitivity_NoOutlier, data=df)
+summary(linearModIR3)
+linearModDemoIR3 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+irSensitivity_NoOutlier, data=df)
+summary(linearModDemoIR3)
+linearModMR3 <- lm(mentalHealth_NoOutlier ~ mrSensitivity_NoOutlier, data=df)
+summary(linearModMR3)
+linearModDemoMR3 <- lm(mentalHealth_NoOutlier ~ gender+age+iq+edu+income+mrSensitivity_NoOutlier, data=df)
+summary(linearModDemoMR3)
+
+summaryDemoIR3 <- getLinearModelTable(linearModDemoIR3)
+summaryIR3 <- getLinearModelTable(linearModIR3)
+summaryDemoMR3 <- getLinearModelTable(linearModDemoMR3)
+summaryMR3 <- getLinearModelTable(linearModMR3)
+
+print(summaryDemoIR3$BIC<-BIC(linearModDemoIR3))
+print(summaryDemoMR3$BIC<-BIC(linearModDemoMR3))
+print(summaryDemoIR3$deltaBIC<-BIC(linearModDemoIR3)-BIC(linearModDemoIR3))
+print(summaryDemoMR3$deltaBIC<-BIC(linearModDemoMR3)-BIC(linearModDemoIR3))
+
+print(summaryIR3$BIC<-BIC(linearModIR3))
+print(summaryMR3$BIC<-BIC(linearModMR3))
+print(summaryIR3$deltaBIC<-BIC(linearModIR3)-BIC(linearModIR3))
+print(summaryMR3$deltaBIC<-BIC(linearModMR3)-BIC(linearModIR3))
+
+
+results_table_IRvsMR<-list();
+results_table_IRvsMR$Experiment1<-bind_rows(summaryDemoIR1,summaryDemoMR1,summaryIR1,summaryMR1)
+rownames(results_table_IRvsMR$Experiment1) <- c("Intrinsic reward (with dem.)", "Monetary reward (with dem.)","Intrinsic reward (without dem.)", "Monetary reward (without dem.)")
+results_table_IRvsMR$Experiment2<-bind_rows(summaryDemoIR2,summaryDemoMR2,summaryIR2,summaryMR2)
+rownames(results_table_IRvsMR$Experiment2) <- c("Intrinsic reward (with dem.)", "Monetary reward (with dem.)","Intrinsic reward (without dem.)", "Monetary reward (without dem.)")
+results_table_IRvsMR$Experiment3<-bind_rows(summaryDemoIR3,summaryDemoMR3,summaryIR3,summaryMR3)
+rownames(results_table_IRvsMR$Experiment3) <- c("Intrinsic reward (with dem.)", "Monetary reward (with dem.)","Intrinsic reward (without dem.)", "Monetary reward (without dem.)")
+
+print(results_table_IRvsMR$Experiment1)
+print(results_table_IRvsMR$Experiment2)
+print(results_table_IRvsMR$Experiment3)
+```
+
+## Comparing intrinsic rewards versus monetary rewards reducing triplets
+### Experiment 1
+#### Monetary & visual & neutral
+```{r echo=FALSE}
+X<-subset(lStim1, select=c('LikingV','LikingM','LikingN','WantingV','WantingM','WantingN','LearningV','LearningM','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_VMR1<-fa.none$scores[,1]
+
+# plot the ladings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1st Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Monetary","Liking Neutral","Wanting Visual","Wanting Monetary","Wanting Neutral","Reinforcing Visual","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+```
+#### Monetary & Cognitive & neutral
+```{r echo=FALSE}
+X<-subset(lStim1, select=c('LikingC','LikingM','LikingN','WantingC','WantingM','WantingN','LearningC','LearningM','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_CMR1<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1st Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking COgnitive","Liking Monetary","Liking Neutral","Wanting Cognitive","Wanting Monetary","Wanting Neutral","Reinforcing Cognitive","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+```
+#### Monetary & Social & neutral
+```{r echo=FALSE}
+X<-subset(lStim1, select=c('LikingS','LikingM','LikingN','WantingS','WantingM','WantingN','LearningS','LearningM','LearningN'))
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 4,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_SMR1<-fa.none$scores[,2]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,2]), horiz=T,main="Intrinsic reward 2nd Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Social","Liking Monetary","Liking Neutral","Wanting Social","Wanting Monetary","Wanting Neutral","Reinforcing Social","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+```
+#### Cognitive & visual & neutral
+```{r echo=FALSE}
+X<-subset(lStim1, select=c('LikingV','LikingC','LikingN','WantingV','WantingC','WantingN','LearningV','LearningC','LearningN'))
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_VCR1<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1rst Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Neutral")),las=1)
+```
+#### Visual & Social & Neutral
+```{r echo=FALSE}
+X<-subset(lStim1, select=c('LikingV','LikingS','LikingN','WantingV','WantingS','WantingN','LearningV','LearningS','LearningN'))
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_VSR1<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1rst Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Neutral")),las=1)
+```
+
+### Cognitive & Social & Neutral
+```{r echo=FALSE}
+X<-subset(lStim1, select=c('LikingS','LikingC','LikingN','WantingS','WantingC','WantingN','LearningS','LearningC','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_CSR1<-fa.none$scores[,2]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,2]), horiz=T,main="Intrinsic reward 1rst Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Neutral")),las=1)
+```
+## Run the regressions and compare the model families
+```{r echo=FALSE}
+mentalHealth<- scoreFA_PP1
+df<-data.frame(mentalHealth,scoreFA_CSR1,scoreFA_VSR1,scoreFA_VCR1,scoreFA_SMR1,scoreFA_CMR1,scoreFA_VMR1,lDemo1)
+
+
+linMod_CSR1<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_CSR1, data=df)
+linMod_VSR1<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_VSR1, data=df)
+linMod_VCR1<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_VCR1, data=df)
+linMod_SMR1<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_SMR1, data=df)
+linMod_CMR1<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_CMR1, data=df)
+linMod_VMR1<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_VMR1, data=df)
+
+BIC_MR<-BIC(linMod_SMR1)+BIC(linMod_CMR1)+BIC(linMod_VMR1)
+BIC_IR<-BIC(linMod_CSR1)+BIC(linMod_VSR1)+BIC(linMod_VCR1)
+print(BIC_IR)
+print(BIC_MR)
+print(deltaBIC_pairs_1<-BIC_MR-BIC_IR)
+
+linMod_CSR1<-lm(mentalHealth ~ scoreFA_CSR1, data=df)
+linMod_VSR1<-lm(mentalHealth ~ scoreFA_VSR1, data=df)
+linMod_VCR1<-lm(mentalHealth ~ scoreFA_VCR1, data=df)
+linMod_SMR1<-lm(mentalHealth ~ scoreFA_SMR1, data=df)
+linMod_CMR1<-lm(mentalHealth ~ scoreFA_CMR1, data=df)
+linMod_VMR1<-lm(mentalHealth ~ scoreFA_VMR1, data=df)
+
+
+BIC_MR<-BIC(linMod_SMR1)+BIC(linMod_CMR1)+BIC(linMod_VMR1)
+BIC_IR<-BIC(linMod_CSR1)+BIC(linMod_VSR1)+BIC(linMod_VCR1)
+print(BIC_IR)
+print(BIC_MR)
+print(deltaBIC_pairs_1<-BIC_MR-BIC_IR)
+```
+### Experiment 2
+#### Monetary & visual & neutral
+```{r echo=FALSE}
+X<-subset(lStim2, select=c('LikingV','LikingM','LikingN','WantingV','WantingM','WantingN','LearningV','LearningM','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_VMR2<-fa.none$scores[,1]
+
+# plot the ladings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1st Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Monetary","Liking Neutral","Wanting Visual","Wanting Monetary","Wanting Neutral","Reinforcing Visual","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+```
+#### Monetary & Cognitive & neutral
+```{r echo=FALSE}
+X<-subset(lStim2, select=c('LikingC','LikingM','LikingN','WantingC','WantingM','WantingN','LearningC','LearningM','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_CMR2<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1st Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking COgnitive","Liking Monetary","Liking Neutral","Wanting Cognitive","Wanting Monetary","Wanting Neutral","Reinforcing Cognitive","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+```
+#### Monetary & Social & neutral
+```{r echo=FALSE}
+X<-subset(lStim2, select=c('LikingS','LikingM','LikingN','WantingS','WantingM','WantingN','LearningS','LearningM','LearningN'))
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_SMR2<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 2nd Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Social","Liking Monetary","Liking Neutral","Wanting Social","Wanting Monetary","Wanting Neutral","Reinforcing Social","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+```
+#### Cognitive & visual & neutral
+```{r echo=FALSE}
+X<-subset(lStim2, select=c('LikingV','LikingC','LikingN','WantingV','WantingC','WantingN','LearningV','LearningC','LearningN'))
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_VCR2<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,3,1,1,3,1,1,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1rst Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Neutral")),las=1)
+```
+#### Visual & Social & Neutral
+```{r echo=FALSE}
+X<-subset(lStim2, select=c('LikingV','LikingS','LikingN','WantingV','WantingS','WantingN','LearningV','LearningS','LearningN'))
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_VSR2<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,3,1,1,3,1,1,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1rst Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Neutral")),las=1)
+```
+
+### Cognitive & Social & Neutral
+```{r echo=FALSE}
+X<-subset(lStim2, select=c('LikingS','LikingC','LikingN','WantingS','WantingC','WantingN','LearningS','LearningC','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_CSR2<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,3,1,1,3,1,1,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1rst Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Neutral")),las=1)
+```
+## Run the regressions and compare the model families
+```{r echo=FALSE}
+mentalHealth<- scoreFA_PP2
+df<-data.frame(mentalHealth,scoreFA_CSR2,scoreFA_VSR2,scoreFA_VCR2,scoreFA_SMR2,scoreFA_CMR2,scoreFA_VMR2,lDemo2)
+
+
+#CSR
+linMod_CSR2<-lm(mentalHealth ~ scoreFA_CSR2, data=df)
+linMod_VSR2<-lm(mentalHealth ~ scoreFA_VSR2, data=df)
+linMod_VCR2<-lm(mentalHealth ~ scoreFA_VCR2, data=df)
+linMod_SMR2<-lm(mentalHealth ~ scoreFA_SMR2, data=df)
+linMod_CMR2<-lm(mentalHealth ~ scoreFA_CMR2, data=df)
+linMod_VMR2<-lm(mentalHealth ~ scoreFA_VMR2, data=df)
+
+BIC_MR<-BIC(linMod_SMR2)+BIC(linMod_CMR2)+BIC(linMod_VMR2)
+BIC_IR<-BIC(linMod_CSR2)+BIC(linMod_VSR2)+BIC(linMod_VCR2)
+print(BIC_IR)
+print(BIC_MR)
+print(deltaBIC_pairs_2<-BIC_MR-BIC_IR)
+
+linMod_CSR2<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_CSR2, data=df)
+linMod_VSR2<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_VSR2, data=df)
+linMod_VCR2<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_VCR2, data=df)
+linMod_SMR2<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_SMR2, data=df)
+linMod_CMR2<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_CMR2, data=df)
+linMod_VMR2<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_VMR2, data=df)
+BIC_MR<-BIC(linMod_SMR2)+BIC(linMod_CMR2)+BIC(linMod_VMR2)
+BIC_IR<-BIC(linMod_CSR2)+BIC(linMod_VSR2)+BIC(linMod_VCR2)
+print(BIC_IR)
+print(BIC_MR)
+print(deltaBIC_pairs_2<-BIC_MR-BIC_IR)
+
+```
+### Experiment 3
+#### Monetary & visual & neutral
+```{r echo=FALSE}
+X<-subset(lStim3, select=c('LikingV','LikingM','LikingN','WantingV','WantingM','WantingN','LearningV','LearningM','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 4,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_VMR3<-fa.none$scores[,2]
+
+# plot the ladings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,2]), horiz=T,main="Intrinsic reward 1st Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Monetary","Liking Neutral","Wanting Visual","Wanting Monetary","Wanting Neutral","Reinforcing Visual","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+```
+#### Monetary & Cognitive & neutral
+```{r echo=FALSE}
+X<-subset(lStim3, select=c('LikingC','LikingM','LikingN','WantingC','WantingM','WantingN','LearningC','LearningM','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 4,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_CMR3<-fa.none$scores[,2]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,2]), horiz=T,main="Intrinsic reward 1st Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking COgnitive","Liking Monetary","Liking Neutral","Wanting Cognitive","Wanting Monetary","Wanting Neutral","Reinforcing Cognitive","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+```
+#### Monetary & Social & neutral
+```{r echo=FALSE}
+X<-subset(lStim3, select=c('LikingS','LikingM','LikingN','WantingS','WantingM','WantingN','LearningS','LearningM','LearningN'))
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 4,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_SMR3<-fa.none$scores[,2]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,2,3,1,2,3,1,2,3))
+barplot(height=rev(fa.none$loadings[,2]), horiz=T,main="Intrinsic reward 2nd Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Social","Liking Monetary","Liking Neutral","Wanting Social","Wanting Monetary","Wanting Neutral","Reinforcing Social","Reinforcing Monetary","Reinforcing Neutral")),las=1)
+```
+#### Cognitive & visual & neutral
+```{r echo=FALSE}
+X<-subset(lStim3, select=c('LikingV','LikingC','LikingN','WantingV','WantingC','WantingN','LearningV','LearningC','LearningN'))
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_VCR3<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,3,1,1,3,1,1,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1rst Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Neutral")),las=1)
+```
+#### Visual & Social & Neutral
+```{r echo=FALSE}
+X<-subset(lStim3, select=c('LikingV','LikingS','LikingN','WantingV','WantingS','WantingN','LearningV','LearningS','LearningN'))
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 4,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_VSR3<-fa.none$scores[,1]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,3,1,1,3,1,1,3))
+barplot(height=rev(fa.none$loadings[,1]), horiz=T,main="Intrinsic reward 1rst Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Neutral")),las=1)
+```
+
+### Cognitive & Social & Neutral
+```{r echo=FALSE}
+X<-subset(lStim3, select=c('LikingS','LikingC','LikingN','WantingS','WantingC','WantingN','LearningS','LearningC','LearningN')) 
+# select factors to retain
+## initialisation
+nsubjects    <- nrow(X)      # Extracts the number of subjects
+e<-eigen(cor(X))
+eigenvalues  <- e$values    # Extracts the observed eigenvalues
+variables    <- length(eigenvalues) # Computes the number of variables
+## Parallel analysis
+results    <- parallel(var     = variables,subject = nsubjects,rep= rep,cent= cent)$eigen$mevpea
+## plot
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot <- ggplot() +
+  geom_line(aes(x = 1:variables, y = results), color = "green", linetype = "dashed", size = 1.1) +
+  geom_line(aes(x = 1:variables, y = eigenvalues), linetype = "solid", size = 1.1) +
+  geom_point(aes(x = 1:variables, y = eigenvalues),color='black', fill='white',shape=21, size = 4,stroke=1.2) +
+  scale_x_continuous(name = "Number of Factors", breaks = seq(1, variables, 1)) +
+  scale_y_continuous(name = "Eigenvalues", breaks = seq(0, max(eigenvalues), 1)) +
+  ggtitle("Parallel Analysis") +
+  theme_bw() +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(size = 18),    # increase title size
+        plot.subtitle = element_text(size = 16), # increase subtitle size
+        axis.title = element_text(size = 16),    # increase axis label size
+        axis.text = element_text(size = 14),     # increase axis tick label size)  # remove grid lines
+        )+
+  ggeasy::easy_center_title()
+print(plot)
+
+# factor analysis 
+fa.none <- fa(r=X, nfactors= 3,fm='ols',max.iter=100,rotate='bifactor')
+scoreFA_CSR3<-fa.none$scores[,2]
+
+# plot the loadings
+par(mar=c(4,12,4,4))
+cols <- c("orange","cyan3",'grey')
+pos<-rev(c(1,1,3,1,1,3,1,1,3))
+barplot(height=rev(fa.none$loadings[,2]), horiz=T,main="Intrinsic reward 1rst Factor",xlab="Factor loadings",col=cols[pos],border=cols[pos],
+names.arg=rev(c("Liking Visual","Liking Cognitive","Liking Neutral","Wanting Visual","Wanting Cognitive","Wanting Neutral","Reinforcing Visual","Reinforcing Cognitive","Reinforcing Neutral")),las=1)
+```
+## Run the regressions and compare the model families
+```{r echo=FALSE}
+
+mentalHealth<- scoreFA_PP3
+df<-data.frame(mentalHealth,scoreFA_CSR3,scoreFA_VSR3,scoreFA_VCR3,scoreFA_SMR3,scoreFA_CMR3,scoreFA_VMR3,lDemo3)
+
+
+linMod_CSR3<-lm(mentalHealth ~ scoreFA_CSR3, data=df)
+linMod_VSR3<-lm(mentalHealth ~ scoreFA_VSR3, data=df)
+linMod_VCR3<-lm(mentalHealth ~ scoreFA_VCR3, data=df)
+linMod_SMR3<-lm(mentalHealth ~ scoreFA_SMR3, data=df)
+linMod_CMR3<-lm(mentalHealth ~ scoreFA_CMR3, data=df)
+linMod_VMR3<-lm(mentalHealth ~ scoreFA_VMR3, data=df)
+
+BIC_MR<-BIC(linMod_SMR3)+BIC(linMod_CMR3)+BIC(linMod_VMR3)
+BIC_IR<-BIC(linMod_CSR3)+BIC(linMod_VSR3)+BIC(linMod_VCR3)
+print(BIC_IR)
+print(BIC_MR)
+print(deltaBIC_pairs_3<-BIC_MR-BIC_IR)
+
+linMod_CSR3<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_CSR3, data=df)
+linMod_VSR3<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_VSR3, data=df)
+linMod_VCR3<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_VCR3, data=df)
+linMod_SMR3<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_SMR3, data=df)
+linMod_CMR3<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_CMR3, data=df)
+linMod_VMR3<-lm(mentalHealth ~ gender+age+iq+edu+income+scoreFA_VMR3, data=df)
+
+BIC_MR<-BIC(linMod_SMR3)+BIC(linMod_CMR3)+BIC(linMod_VMR3)
+BIC_IR<-BIC(linMod_CSR3)+BIC(linMod_VSR3)+BIC(linMod_VCR3)
+print(BIC_IR)
+print(BIC_MR)
+print(deltaBIC_pairs_3<-BIC_MR-BIC_IR)
+
+
+```
